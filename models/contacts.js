@@ -45,17 +45,15 @@ const removeContact = async (contactId) => {
   return removedContact;
 };
 
-const updateById = async (id, name, email, phone) => {
+const updateContact = async (contactId, body) => {
   const contacts = await listContacts();
-  const result = contacts.find((item) => item.id === id);
-  if (!result) {
+  const id = contacts.findIndex((item) => item.id === contactId);
+  if (id === -1) {
     return null;
   }
-  result.name = name;
-  result.email = email;
-  result.phone = phone;
+  contacts[id] = { ...contacts[id], ...body };
   await updateContacts(contacts);
-  return result;
+  return contacts[id];
 };
 
 module.exports = {
@@ -63,5 +61,5 @@ module.exports = {
   getContactById,
   addContact,
   removeContact,
-  updateById,
+  updateContact,
 };

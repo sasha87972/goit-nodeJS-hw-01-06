@@ -1,12 +1,12 @@
-const contactOperations = require("../../models/contacts");
+const { Contact } = require("../../models/contact");
 
-async function listContacts(req, res, next) {
-  const result = await contactOperations.listContacts();
+async function listContacts(req, res) {
+  const response = await Contact.find({});
   res.json({
     status: "success",
     code: 200,
     data: {
-      result,
+      response,
     },
   });
 }

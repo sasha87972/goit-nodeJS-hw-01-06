@@ -16,7 +16,10 @@ const login = async (req, res) => {
   }
   const passCompare = bcrypt.compareSync(password, user.password);
   if (!passCompare) {
-    throw new Unauthorized("Email or password is wrong");
+    throw new Unauthorized("Check your password!");
+  }
+  if (!user.verify) {
+    throw new Unauthorized("Unauthorized!");
   }
 
   const payload = {
@@ -24,7 +27,7 @@ const login = async (req, res) => {
   };
   const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "8h" });
   await User.findByIdAndUpdate(user._id, { token });
-  await User.findByIdAndUpdate(user._id, { token });
+
   res.json({
     status: "success",
     code: 200,
